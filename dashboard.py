@@ -56,23 +56,37 @@ with tab1:
     )
 
 with tab2:
-    st.header("Total Bike Rentals by Season for Casual and Registered Users")
-    seasonal_user_rentals = filtered_df.groupby('season')[['casual', 'registered']].sum().reset_index()
-    fig, ax = plt.subplots()
-    sns.barplot(x='season', y='casual', data=seasonal_user_rentals, label='Casual', ax=ax, color='skyblue')
-    sns.barplot(x='season', y='registered', data=seasonal_user_rentals, label='Registered', ax=ax, color='salmon')
-    ax.set_xlabel("Season")
-    ax.set_ylabel("Total Rentals")
-    plt.legend()
-    st.pyplot(fig)
+ st.header("Total Bike Rentals by Season for Casual and Registered Users")
 
-    st.write("### Data Table")
-    st.dataframe(
-        seasonal_user_rentals.style.set_properties(**{
-            'background-color': 'black',
-            'color': 'white'
-        })
-    )
+# Group by season and sum up the rentals for 'casual' and 'registered'
+seasonal_user_rentals = filtered_df.groupby('season')[['casual', 'registered']].sum().reset_index()
+
+# Set up the plot
+fig, ax = plt.subplots(figsize=(10, 6))  # You can adjust the figure size for better visualization
+sns.barplot(x='season', y='casual', data=seasonal_user_rentals, label='Casual', ax=ax, color='skyblue')
+sns.barplot(x='season', y='registered', data=seasonal_user_rentals, label='Registered', ax=ax, color='salmon')
+
+# Adding labels and title to the plot
+ax.set_xlabel("Season", fontsize=12)
+ax.set_ylabel("Total Rentals", fontsize=12)
+ax.set_title("Total Bike Rentals by Season", fontsize=14)
+plt.legend(title='User Type')
+
+# Display the plot
+st.pyplot(fig)
+
+# Display the data table with custom styling
+st.write("### Data Table")
+st.dataframe(
+    seasonal_user_rentals.style.set_properties(**{
+        'background-color': 'black',
+        'color': 'white',
+        'border-color': 'white'
+    }).set_table_styles([{
+        'selector': 'th',
+        'props': [('background-color', 'darkgrey'), ('color', 'white')]
+    }])
+)
 
 with tab3:
     st.header("Relationship Between Temperature and Total Bike Rentals")
