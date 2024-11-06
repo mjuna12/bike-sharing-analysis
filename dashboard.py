@@ -54,39 +54,49 @@ with tab1:
             'color': 'white'
         })
     )
-
 with tab2:
- st.header("Total Bike Rentals by Season for Casual and Registered Users")
+    st.header("Total Bike Rentals by Season for Casual and Registered Users")
 
-# Group by season and sum up the rentals for 'casual' and 'registered'
-seasonal_user_rentals = filtered_df.groupby('season')[['casual', 'registered']].sum().reset_index()
+    # Group by season and sum up the rentals for 'casual' and 'registered'
+    seasonal_user_rentals = filtered_df.groupby('season')[['casual', 'registered']].sum().reset_index()
 
-# Set up the plot
-fig, ax = plt.subplots(figsize=(10, 6))  # You can adjust the figure size for better visualization
-sns.barplot(x='season', y='casual', data=seasonal_user_rentals, label='Casual', ax=ax, color='skyblue')
-sns.barplot(x='season', y='registered', data=seasonal_user_rentals, label='Registered', ax=ax, color='salmon')
+    # Check for missing values or unexpected data
+    print(seasonal_user_rentals)
 
-# Adding labels and title to the plot
-ax.set_xlabel("Season", fontsize=12)
-ax.set_ylabel("Total Rentals", fontsize=12)
-ax.set_title("Total Bike Rentals by Season", fontsize=14)
-plt.legend(title='User Type')
+    # Set 'season' as a category to ensure proper plotting
+    seasonal_user_rentals['season'] = seasonal_user_rentals['season'].astype('category')
 
-# Display the plot
-st.pyplot(fig)
+    # Set up the plot (2 subplots side by side)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))  # 1 row, 2 columns
 
-# Display the data table with custom styling
-st.write("### Data Table")
-st.dataframe(
-    seasonal_user_rentals.style.set_properties(**{
-        'background-color': 'black',
-        'color': 'white',
-        'border-color': 'white'
-    }).set_table_styles([{
-        'selector': 'th',
-        'props': [('background-color', 'darkgrey'), ('color', 'white')]
-    }])
-)
+    # Plot Casual rentals
+    sns.barplot(x='season', y='casual', data=seasonal_user_rentals, ax=ax1, color='skyblue')
+    ax1.set_title("Casual Rentals by Season")
+    ax1.set_xlabel("Season")
+    ax1.set_ylabel("Total Rentals")
+
+    # Plot Registered rentals
+    sns.barplot(x='season', y='registered', data=seasonal_user_rentals, ax=ax2, color='salmon')
+    ax2.set_title("Registered Rentals by Season")
+    ax2.set_xlabel("Season")
+    ax2.set_ylabel("Total Rentals")
+
+    # Display the plot
+    st.pyplot(fig)
+
+    # Display the data table with custom styling
+    st.write("### Data Table")
+    st.dataframe(
+        seasonal_user_rentals.style.set_properties(**{
+            'background-color': 'black',
+            'color': 'white',
+            'border-color': 'white'
+        }).set_table_styles([{
+            'selector': 'th',
+            'props': [('background-color', 'darkgrey'), ('color', 'white')]
+        }])
+    )
+
 
 with tab3:
     st.header("Relationship Between Temperature and Total Bike Rentals")
@@ -103,4 +113,3 @@ with tab4:
     ax.set_xlabel("Normalized Humidity (humidity)")
     ax.set_ylabel("Total Rentals (count)")
     st.pyplot(fig)
-
