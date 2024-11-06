@@ -1,6 +1,9 @@
 # Bike Sharing Analysis
-
+![Bike Sharing](data/bike-rent.png)
 This project analyzes bike sharing data to understand the factors influencing bike rental usage. 
+
+![Bike Sharing](data/result.png)
+
 
 ## Setup Environment - Anaconda
 ```
@@ -22,6 +25,10 @@ pip install -r requirements.txt
 ```
 streamlit run dashboard.py
 ```
+
+You can also access the deployed version of the app here:  
+[Bike Sharing Streamlit App](https://bike-sharing-analysis-iuwwmsbj4kafr4c4qxwprs.streamlit.app/)
+
 
 ## Project Overview
 
